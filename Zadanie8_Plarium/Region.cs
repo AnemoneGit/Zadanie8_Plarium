@@ -8,14 +8,11 @@ using System.Xml.Serialization;
 namespace Zadanie8_Plarium
 {
     [Serializable]
-    abstract class Region
+    abstract class Region//абстрактный класс регион
     {
-        [XmlElement("Name")]
-        public string Nazva;
-        [XmlAttribute("Value")]
-        public int Plochad;
-        [XmlAttribute("People")]
-        public People people;
+        public string Nazva;//название региона
+        public int Plochad;// площадь региона
+        public People people;// люди которые живут в регионе
 
         public Region(string Name, int plochad, People person)
         {
@@ -27,24 +24,22 @@ namespace Zadanie8_Plarium
 
         }
 
-      
-
-        public abstract string GetInfo();
+        public abstract string GetInfo();//абстрактный метод вывода информации о регионе
 
     }
-
-    class Oblast : Region
+    [Serializable]
+    class Oblast : Region//наследник от Region класс области
     {
         public Oblast(string Name, int plochad, People person) : base(Name, plochad, person)
         {
         }
-        public override string GetInfo()
+        public override string GetInfo()//переопределенный метод для области
         {
             return $"{Nazva}";
         }
     }
-
-    class Country : Region
+    [Serializable]
+    class Country : Region//наследник от Region класс Страна
     {
         public Country(string Name, int plochad, People person) : base(Name, plochad, person)
         {
@@ -52,19 +47,19 @@ namespace Zadanie8_Plarium
 
         }
         
-        public override string GetInfo()
+        public override string GetInfo()//переопределенный метод для страны
         {
             return $"{Nazva}";
         }
     }
-
-    class City : Region
+    [Serializable]
+    class City : Region//наследник от Region класс города
     {
         public City(string Name, int plochad, People person) : base(Name, plochad, person)
         {
         }
 
-        public override string GetInfo()
+        public override string GetInfo()//переопределенный метод для города
         {
             return $"{Nazva}";
         }

@@ -8,13 +8,11 @@ using System.Xml.Serialization;
 namespace Zadanie8_Plarium
 {
     [Serializable]
-    class People
+    class People//класс людей
     {
-        [XmlElement("Name")]
-        public string Nazvanie;
-        [XmlAttribute("Value")]
-        public string Langue;
-        
+        public string Nazvanie;//национальность
+        public string Langue;//язык общения
+
         public People(string Name, string langue)
         {
             Nazvanie = Name;

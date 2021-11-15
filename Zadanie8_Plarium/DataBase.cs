@@ -10,21 +10,15 @@ using System.Xml.Serialization;
 namespace Zadanie8_Plarium
 {
     [Serializable]
-    class DataBase
+    class DataBase//класс базы данных
     {
-        [XmlIgnore]
-        private int iPeople= 0;
-        [XmlIgnore]
-        private int iRegion = 0;
-        [XmlIgnore]
-        private int iPogoda = 0;
-        [XmlArray("CollectionPeople"), XmlArrayItem("Item")]
+        private int iPeople= 0;//
+        private int iRegion = 0;//счетчики
+        private int iPogoda = 0;//
+        //листы для передачи данных в методы из БД
         public List<People> peoples = new List<People>();
-        [XmlArray("CollectionRegion"), XmlArrayItem("Item")]
         public List<Region> regions = new List<Region>();
-        [XmlIgnore]
         public Pogoda wether = new Pogoda();
-        [XmlArray("CollectionPogoda"), XmlArrayItem("Item")]
         public List<Pogoda> pogodas = new List<Pogoda>();
 
         public DataBase()
@@ -32,7 +26,7 @@ namespace Zadanie8_Plarium
 
 
         }
-    
+        //методы для добавления данных в БД
         #region AddData
         public void AddData(People people)
         {
@@ -67,8 +61,8 @@ namespace Zadanie8_Plarium
         }
         #endregion
 
-        #region removeData
-       
+        #region 
+        //метод для очистки данных
         public void Cleener()
         {
             System.IO.File.WriteAllBytes("People.txt", new byte[0]);
@@ -79,7 +73,7 @@ namespace Zadanie8_Plarium
         #endregion
 
 
-        public void GetToColection()
+        public void GetToColection()//метод для восстановления данных из БД после перезапуска программы
         {
             
             using (StreamReader sr = new StreamReader("People.txt", System.Text.Encoding.Default))
@@ -225,26 +219,6 @@ Test = true;
                 }
 
             }
-        }
-
-
-
-        public void Serialize(DataBase dataBase)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(DataBase));
-            using (FileStream fs = new FileStream("DataBase.xml", FileMode.OpenOrCreate))
-            {
-                serializer.Serialize(fs, dataBase);
-            }
-        }
-        public DataBase DeSerialize(DataBase dataBase)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(DataBase));
-            using (FileStream fs = new FileStream("DataBase.xml", FileMode.OpenOrCreate))
-            {
-                dataBase = (DataBase)serializer.Deserialize(fs);
-            }
-            return dataBase;
         }
 
        

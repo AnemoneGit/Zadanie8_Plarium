@@ -9,20 +9,16 @@ using System.Xml.Serialization;
 namespace Zadanie8_Plarium
 {
     [Serializable]
-    class Pogoda
+    class Pogoda//класс погоды
     {
-        [XmlAttribute("Region")]
-        public Region reg { get; set; }
-        [XmlAttribute("Data")]
-        public DateTime date;
-        [XmlAttribute("Temperatyre")]
-        public decimal temp;
-        [XmlElement("Osad")]
-        public string osad;
+        public Region reg { get; set; }//регион по которому будет информация о погоде
+        public DateTime date;//дата
+        public decimal temp;//температура
+        public string osad;//осадки
 
-        public delegate void AccountHandler(string message);
-        private event AccountHandler _notify;
-        public event AccountHandler Notify
+        public delegate void AccountHandler(string message);//делегат для события
+        private event AccountHandler _notify;//событие(вывод информации если подписались на событие)
+        public event AccountHandler Notify//добавление и удаление событий
         {
             add
             {
@@ -49,10 +45,10 @@ namespace Zadanie8_Plarium
            
 
         }
-        public void GetPogoda(List<Pogoda> vezers, Region region)
+        public void GetPogoda(List<Pogoda> vezers, Region region)//Вывести сведения о погоде в заданном регионе
         {
 
-            IEnumerable<Pogoda> results = vezers.Where(s => s.reg.Nazva == region.Nazva);
+            IEnumerable<Pogoda> results = vezers.Where(s => s.reg.Nazva == region.Nazva);//один из синтакцисов LINQ запроса
 
             foreach (Pogoda pogoda in results)
                
@@ -61,26 +57,26 @@ namespace Zadanie8_Plarium
                 }
 
         }
-        public void GetData(List<Pogoda> vezers, Region region, string osadki, decimal zTemp)
+        public void GetData(List<Pogoda> vezers, Region region, string osadki, decimal zTemp)//Вывести даты, когда в заданном регионе шел снег и температура была ниже заданной отрицательной
         {
 
             IEnumerable<Pogoda> results = from s in vezers
                                                      where s.reg.Nazva == region.Nazva && s.osad == osadki && zTemp > s.temp
-                                          select s;
+                                          select s;//один из синтакцисов LINQ запроса
             foreach (Pogoda pogoda in results)
                     _notify?.Invoke($" {pogoda.date} числа {pogoda.reg.GetInfo()}, температура {pogoda.temp + "°C"} была меньше заданной {zTemp + "°C"}, и были заданные осадки:{pogoda.osad}");
         }
-        public void GetPogoda(List<Pogoda> vezers, string Lang)
+        public void GetPogoda(List<Pogoda> vezers, string Lang)//Вывести информацию о погоде за прошедшую неделю в регионах, жители которых общаются на заданном языке
         {
             IEnumerable<Pogoda> results = from s in vezers
                                           where s.reg.people.Langue == Lang && s.date.AddDays(7) >= DateTime.Today
-                                          select s;
+                                          select s;//один из синтакцисов LINQ запроса
             foreach (Pogoda pogoda in results)
             _notify?.Invoke($"{pogoda.reg.GetInfo()} люди говорят на языке {Lang} {pogoda.date} числа, температура {pogoda.temp + "°C"}, осадки:{pogoda.osad}");
                
             
         }
-        public void GetTemp(List<Pogoda> vezers, int Zplochad, List< Region> regions)
+        public void GetTemp(List<Pogoda> vezers, int Zplochad, List< Region> regions)//Вывести среднюю температуру за прошедшую неделю в регионах с площадью больше заданной
         {
             decimal srTemp = 0;
             foreach (Region region in regions)
@@ -100,7 +96,7 @@ namespace Zadanie8_Plarium
             }
 
         }
-        public override string ToString()
+        public override string ToString()//переопределенный метод ToString
         {
             return $"Регион:\n{reg.GetInfo()}\nДата:\n{date}\nТемпература:\n{temp}\nОсодки:\n{osad}\n";
         }
